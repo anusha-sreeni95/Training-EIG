@@ -14,12 +14,13 @@ import java.util.ArrayList;
 /**
  * Created by anusha on 30/6/17.
  */
+@RequestMapping("/emp")
 @RestController
 public class EmployeeController {
     @Autowired
     EmployeeService employeeService;
 
-    @RequestMapping(value="/emp/{name}",method= RequestMethod.GET)
+    @RequestMapping(value="/{name}",method= RequestMethod.GET)
     public Employee getEmployee(@PathVariable("name") String name, HttpServletResponse httpServletResponse){
         Employee employee=employeeService.findByName(name);
         if(employee!=null){
@@ -31,7 +32,7 @@ public class EmployeeController {
         return employee;
     }
 
-    @RequestMapping(value="/emp",method=RequestMethod.GET)
+    @RequestMapping(value="/",method=RequestMethod.GET)
     public ArrayList<Employee> findAllEmployees(HttpServletResponse httpServletResponse){
         ArrayList<Employee> employees = employeeService.findAllEmployees();
         if(employees != null){
@@ -43,13 +44,13 @@ public class EmployeeController {
         return employees;
     }
 
-    @RequestMapping(value="/emp/update/{name}/{password}",method=RequestMethod.PUT)
+    @RequestMapping(value="/update/{name}/{password}",method=RequestMethod.PUT)
     public Employee updatePassword(@PathVariable("name") String name,@PathVariable("password") String password){
         Employee employee=employeeService.updatePassword(name,password);
         return employee;
     }
 
-    @RequestMapping(value="/emp/delete/{name}",method= RequestMethod.DELETE)
+    @RequestMapping(value="/delete/{name}",method= RequestMethod.DELETE)
     public void deleteEmployee(@PathVariable("name") String name){
         employeeService.deleteEmployee(name);
     }
