@@ -5,12 +5,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.Iterator;
 
 /**
  * Created by anusha on 30/6/17.
  */
+@Transactional
+@Service
 public class EmployeeService {
    @Autowired
    private EmployeeRepository employeeRepository;
@@ -39,7 +42,7 @@ public class EmployeeService {
     public void deleteEmployee(String name) throws DataAccessException {
         Employee employee=employeeRepository.findByName(name);
         if(employee!=null){
-            employeeRepository.delete(employee.getId());
+            employeeRepository.delete(employee.getName());
         }
     }
 }

@@ -11,17 +11,17 @@ public class Employee {
     @Id
     @GeneratedValue(strategy= GenerationType.SEQUENCE)
     @Column(name = "id")
-    private String id;
+    private int id;
     @Column(name = "name")
     private String name;
     @Column(name = "password")
     private String password;
     @Column(name = "authToken")
     private String authToken;
-    public String getId() {
+    public int getId() {
         return id;
     }
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
     public String getName() {

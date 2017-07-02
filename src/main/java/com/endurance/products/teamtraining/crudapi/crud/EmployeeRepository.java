@@ -11,4 +11,5 @@ import java.util.ArrayList;
 public interface EmployeeRepository extends CrudRepository<Employee, String>{
     Employee findByName(String name);
     ArrayList<Employee> findAll();
+
 }
