@@ -14,15 +14,13 @@ import java.util.Map;
  */
 @RestController
 @EnableAutoConfiguration
-@RequestMapping("/auth")
+@RequestMapping("")
 public class AuthController {
-
-    //TODO add logging/auditing
-    //TODO add aspect for checking if the user is logedin
-    //TODO add psotgres
 
     @Autowired
     private AuthService authService;
+
+
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public void createEmployee(@RequestBody Employee employee, HttpServletResponse response){
@@ -30,15 +28,15 @@ public class AuthController {
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public void loginEmployee(@RequestBody Map<String, String> body, HttpServletResponse response){
+    public String loginEmployee(@RequestBody Map<String, String> body, HttpServletResponse response){
         String user_name = body.get("username");
         String password = body.get("password");
-        authService.loginEmployeeService(user_name, password, response);
+        return authService.loginEmployeeService(user_name, password, response);
     }
 
     @RequestMapping(value = "/logout", method = RequestMethod.PUT)
-    public void logoutEmployee(@RequestBody String employee_name, HttpServletResponse response){
-        authService.logoutEmployeeService(employee_name, response);
+    public void logoutEmployee(@RequestBody Map<String, String> body, HttpServletResponse response){
+        authService.logoutEmployeeService(body.get("name"), response);
     }
 
 }

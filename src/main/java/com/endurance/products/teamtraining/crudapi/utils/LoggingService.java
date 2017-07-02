@@ -1,22 +1,24 @@
 package com.endurance.products.teamtraining.crudapi.utils;
 
+import org.apache.log4j.Logger;
+import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
 import org.springframework.stereotype.Component;
 
+import javax.xml.soap.SOAPPart;
 
 
 @Aspect
 @Component
 public class LoggingService {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(LoggingService.class);
+    final static Logger logger = Logger.getLogger(LoggingService.class);
 
-    @Before("execution(* com.endurance.products.teamtraining.crudapi.auth.AuthController.createEmployee (java.lang.String)) && args(sampleName)")
-    public void beforeSampleCreation(String sampleName) {
-        LOGGER.info("A request was issued for a sample name: "+sampleName);
+    @Before("execution(* com.endurance.products.teamtraining.crudapi.auth.AuthController.createEmployee(*,*))")
+    public void beforeSampleCreation(JoinPoint jp) throws Throwable {
+        logger.info("A request was issued to register a employee: ");
     }
 }

@@ -27,37 +27,12 @@ public class EmployeeController {
 
     @RequestMapping(value="/{name}",method= RequestMethod.GET)
     public Map<String, String> getEmployee(@PathVariable("name") String name, HttpServletResponse httpServletResponse){
-        Employee employee=employeeService.findByName(name);
-        if(employee!=null){
-            httpServletResponse.setStatus(200);
-        }
-        else{
-            httpServletResponse.setStatus(404);
-        }
-        Map<String, String> resp = new HashMap<String, String>();
-        resp.put("username", employee.getName());
-        resp.put("authtoken", employee.getAuthToken());
-        return resp;
+        return employeeService.findByName(name,httpServletResponse);
     }
 
     @RequestMapping(value="/",method=RequestMethod.GET)
     public ArrayList<Map<String,String>> findAllEmployees(HttpServletResponse httpServletResponse){
-        ArrayList<Employee> employees = employeeService.findAllEmployees();
-        if(employees != null){
-            httpServletResponse.setStatus(200);
-        }
-        else {
-            httpServletResponse.setStatus(404);
-        }
-        ArrayList<Map<String,String>> resp = new ArrayList<Map<String,String>>();
-
-        for (Employee employee:employees) {
-            Map<String,String> temp=new HashMap<String,String>();
-            temp.put("username", employee.getName());
-            temp.put("authtoken", employee.getAuthToken());
-            resp.add(temp);
-        }
-        return resp;
+        return employeeService.findAllEmployees(httpServletResponse);
     }
 
     @RequestMapping(value="/update/{name}/{password}",method=RequestMethod.PUT)

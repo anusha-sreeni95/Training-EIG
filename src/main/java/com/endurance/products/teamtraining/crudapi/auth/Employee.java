@@ -18,6 +18,19 @@ public class Employee {
     private String password;
     @Column(name = "authToken")
     private String authToken;
+
+    private static final ThreadLocal<String> current = new ThreadLocal<String>();
+
+    public static String getCurrentEmployeeAuth(){
+        return current.get();
+    }
+    public static void setCurrentEmployeeAuth(String authToken){
+        current.set(authToken);
+    }
+    public static void clearCurrentEmployeeAuth(){
+        current.remove();
+    }
+
     public int getId() {
         return id;
     }

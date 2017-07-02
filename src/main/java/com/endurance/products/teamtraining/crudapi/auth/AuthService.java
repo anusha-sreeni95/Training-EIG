@@ -37,17 +37,24 @@ public class AuthService {
     }
 
 
-    public void loginEmployeeService(String user_name, String passsword, HttpServletResponse response) {
+    public String loginEmployeeService(String user_name, String passsword, HttpServletResponse response) {
         Employee existing_emp = authRepository.findByName(user_name);
-        if(existing_emp == null)
+        if(existing_emp == null) {
             response.setStatus(404);
+            return null;
+        }
         else{
             if(BCrypt.checkpw(passsword, existing_emp.getPassword())){
                 existing_emp.setAuthToken(authTokenGenerator.nextSessionId());
                 response.setStatus(200);
+                existing_emp.setCurrentEmployeeAuth(existing_emp.getAuthToken());
+                System.out.println(existing_emp.getCurrentEmployeeAuth());
+                return existing_emp.getAuthToken();
+
             }
             else{
                 response.setStatus(401);
+                return null;
             }
         }
     }
@@ -61,6 +68,10 @@ public class AuthService {
                 existing_emp.setAuthToken(null);
                 authRepository.save(existing_emp);
                 response.setStatus(200);
+                System.out.println(existing_emp.getCurrentEmployeeAuth());
+                existing_emp.clearCurrentEmployeeAuth();
+                System.out.println(existing_emp.getCurrentEmployeeAuth());
+
             }
             else{
                 response.setStatus(400);
