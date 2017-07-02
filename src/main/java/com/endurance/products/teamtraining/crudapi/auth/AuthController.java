@@ -7,16 +7,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Map;
+
 /**
  * Created by hemantv on 30/6/17.
  */
 @RestController
 @EnableAutoConfiguration
-@RequestMapping("/")
+@RequestMapping("/auth")
 public class AuthController {
 
     //TODO add logging/auditing
     //TODO add aspect for checking if the user is logedin
+    //TODO add psotgres
 
     @Autowired
     private AuthService authService;
@@ -27,7 +30,9 @@ public class AuthController {
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public void loginEmployee(@RequestBody String user_name, @RequestBody String password, HttpServletResponse response){
+    public void loginEmployee(@RequestBody Map<String, String> body, HttpServletResponse response){
+        String user_name = body.get("username");
+        String password = body.get("password");
         authService.loginEmployeeService(user_name, password, response);
     }
 

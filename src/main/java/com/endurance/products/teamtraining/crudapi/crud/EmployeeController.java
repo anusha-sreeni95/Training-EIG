@@ -3,6 +3,7 @@ package com.endurance.products.teamtraining.crudapi.crud;
 import com.endurance.products.teamtraining.crudapi.auth.Employee;
 import com.sun.org.apache.regexp.internal.RE;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -16,6 +17,7 @@ import java.util.ArrayList;
  */
 @RequestMapping("/emp")
 @RestController
+@EnableAutoConfiguration
 public class EmployeeController {
     @Autowired
     EmployeeService employeeService;
