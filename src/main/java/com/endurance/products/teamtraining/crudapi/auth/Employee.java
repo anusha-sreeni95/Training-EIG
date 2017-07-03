@@ -19,6 +19,16 @@ public class Employee {
     @Column(name = "authToken")
     private String authToken;
 
+    public Employee() {
+    }
+
+    public Employee(int id, String name, String password, String authToken) {
+        this.id = id;
+        this.name = name;
+        this.password = password;
+        this.authToken = authToken;
+    }
+
     private static final ThreadLocal<String> current = new ThreadLocal<String>();
 
     public static String getCurrentEmployeeAuth(){

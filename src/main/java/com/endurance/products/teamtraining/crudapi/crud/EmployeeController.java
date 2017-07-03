@@ -4,10 +4,7 @@ import com.endurance.products.teamtraining.crudapi.auth.Employee;
 import com.sun.org.apache.regexp.internal.RE;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.rowset.serial.SerialStruct;
@@ -35,8 +32,10 @@ public class EmployeeController {
         return employeeService.findAllEmployees(httpServletResponse);
     }
 
-    @RequestMapping(value="/update/{name}/{password}",method=RequestMethod.PUT)
-    public Employee updatePassword(@PathVariable("name") String name,@PathVariable("password") String password){
+    @RequestMapping(value="/update",method=RequestMethod.PUT)
+    public Employee updatePassword(@RequestBody Map<String,String> body){
+        String name = body.get("username");
+        String password = body.get("password");
         Employee employee=employeeService.updatePassword(name,password);
         return employee;
     }
