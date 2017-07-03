@@ -9,9 +9,6 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
 
-/**
- * Created by hemantv on 30/6/17.
- */
 @RestController
 @EnableAutoConfiguration
 @RequestMapping("")
@@ -19,8 +16,6 @@ public class AuthController {
 
     @Autowired
     private AuthService authService;
-
-
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public void createEmployee(@RequestBody Employee employee, HttpServletResponse response){

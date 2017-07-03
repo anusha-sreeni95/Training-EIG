@@ -9,19 +9,10 @@ import javax.servlet.http.HttpServletResponse;
 
 public class EmployeeInterceptor implements HandlerInterceptor {
 
-    Employee current_employee = new Employee();
-
     @Override
     public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o) throws Exception {
         String authToken = httpServletRequest.getHeader("authToken");
-        if(current_employee.getCurrentEmployeeAuth().equals(authToken) && authToken!=null){
-            System.out.print(current_employee.getCurrentEmployeeAuth());
-            System.out.print(authToken);
-            return true;
-        }
-        System.out.print(current_employee.getCurrentEmployeeAuth());
-        System.out.print(authToken);
-        System.out.print("batman");
+        if(authToken!=null && authToken.equals(Employee.getCurrentEmployeeAuth())) return true;
         httpServletResponse.setStatus(403);
         return false;
     }

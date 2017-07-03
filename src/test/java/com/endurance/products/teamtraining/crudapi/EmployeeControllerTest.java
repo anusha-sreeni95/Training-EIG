@@ -1,8 +1,10 @@
 package com.endurance.products.teamtraining.crudapi;
 
+import com.endurance.products.teamtraining.crudapi.auth.AuthService;
 import com.endurance.products.teamtraining.crudapi.auth.Employee;
 import com.endurance.products.teamtraining.crudapi.crud.EmployeeController;
 import com.endurance.products.teamtraining.crudapi.crud.EmployeeService;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
@@ -37,20 +39,28 @@ public class EmployeeControllerTest {
 
     @MockBean
     private EmployeeService employeeService;
+    @MockBean
+    private AuthService authService;
 
     Employee mockEmployee = new Employee(1, "Batman", "Gotham", "codenamearmagadeon");
     String exampleEmployeeJson = "{\"authtoken\":\"codenamearmagadeon\",\"username\":\"Batman\"}";
     Map<String,String> exampleEmployeeReturn = new HashMap<String, String>();
 
-    public EmployeeControllerTest() {
+    public EmployeeControllerTest() throws Exception {
         exampleEmployeeReturn.put("authtoken", "codenamearmagadeon");
         exampleEmployeeReturn.put("username", "Batman");
     }
-
+    @BeforeClass
+    public static void setUp(){
+        Employee.setCurrentEmployeeAuth("codenamearmagadeon");
+    }
     @Test
     public void getEmployeeTest() throws Exception {
         Mockito.when(employeeService.findByName(Mockito.anyString(),Mockito.any())).thenReturn(exampleEmployeeReturn);
-        RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/emp/Batman").accept(MediaType.APPLICATION_JSON);
+        RequestBuilder requestBuilder = MockMvcRequestBuilders
+                .get("/emp/Batman")
+                .accept(MediaType.APPLICATION_JSON)
+                .header("authToken","codenamearmagadeon");
         MvcResult result = mockMvc.perform(requestBuilder).andReturn();
         System.out.println(result.getResponse());
         JSONAssert.assertEquals(exampleEmployeeJson, result.getResponse().getContentAsString(), false);
@@ -60,9 +70,8 @@ public class EmployeeControllerTest {
     public void updatePasswordTest() throws Exception{
         Mockito.when(employeeService.updatePassword(Mockito.anyString(), Mockito.anyString())).thenReturn(mockEmployee);
         RequestBuilder requestBuilder = MockMvcRequestBuilders
-                .put("/emp/update")
-                .accept(MediaType.APPLICATION_JSON).content(exampleEmployeeJson)
-                .contentType(MediaType.APPLICATION_JSON);
+                .put("/emp/update").contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON).content(exampleEmployeeJson).header("authToken","codenamearmagadeon");
         MvcResult result = mockMvc.perform(requestBuilder).andReturn();
         MockHttpServletResponse response = result.getResponse();
         assertEquals(HttpStatus.OK.value(), response.getStatus());

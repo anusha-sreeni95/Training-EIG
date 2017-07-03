@@ -2,9 +2,6 @@ package com.endurance.products.teamtraining.crudapi.auth;
 
 import javax.persistence.*;
 
-/**
- * Created by hemantv on 30/6/17.
- */
 @Entity
 @Table(name = "employee")
 public class Employee {
@@ -18,19 +15,15 @@ public class Employee {
     private String password;
     @Column(name = "authToken")
     private String authToken;
+    private static final ThreadLocal<String> current = new ThreadLocal<String>();
 
-    public Employee() {
-    }
-
+    public Employee() {}
     public Employee(int id, String name, String password, String authToken) {
         this.id = id;
         this.name = name;
         this.password = password;
         this.authToken = authToken;
     }
-
-    private static final ThreadLocal<String> current = new ThreadLocal<String>();
-
     public static String getCurrentEmployeeAuth(){
         return current.get();
     }
@@ -40,7 +33,6 @@ public class Employee {
     public static void clearCurrentEmployeeAuth(){
         current.remove();
     }
-
     public int getId() {
         return id;
     }

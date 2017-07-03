@@ -9,9 +9,6 @@ import org.springframework.stereotype.Service;
 import javax.servlet.http.HttpServletResponse;
 import javax.transaction.Transactional;
 
-/**
- * Created by hemantv on 30/6/17.
- */
 @Transactional
 @Service
 public class AuthService {
@@ -31,11 +28,10 @@ public class AuthService {
 
             response.setStatus(201);
         }
-        else{
+        else
             response.setStatus(409);
-        }
-    }
 
+    }
 
     public String loginEmployeeService(String user_name, String passsword, HttpServletResponse response) {
         Employee existing_emp = authRepository.findByName(user_name);
@@ -71,11 +67,9 @@ public class AuthService {
                 System.out.println(existing_emp.getCurrentEmployeeAuth());
                 existing_emp.clearCurrentEmployeeAuth();
                 System.out.println(existing_emp.getCurrentEmployeeAuth());
-
             }
-            else{
+            else
                 response.setStatus(400);
-            }
         }
     }
 }
