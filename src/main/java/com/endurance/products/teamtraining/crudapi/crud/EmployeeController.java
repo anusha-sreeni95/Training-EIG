@@ -12,9 +12,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Created by anusha on 30/6/17.
- */
 @RequestMapping("/emp")
 @RestController
 @EnableAutoConfiguration

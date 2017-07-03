@@ -10,7 +10,6 @@ import org.springframework.stereotype.Component;
 
 import javax.xml.soap.SOAPPart;
 
-
 @Aspect
 @Component
 public class LoggingService {

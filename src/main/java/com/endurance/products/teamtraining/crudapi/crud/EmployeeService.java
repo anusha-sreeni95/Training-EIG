@@ -12,16 +12,13 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-/**
- * Created by anusha on 30/6/17.
- */
 @Transactional
 @Service
 public class EmployeeService {
-   @Autowired
-   private EmployeeRepository employeeRepository;
+    @Autowired
+    private EmployeeRepository employeeRepository;
 
-   public Map<String, String> findByName(String name, HttpServletResponse httpServletResponse){
+    public Map<String, String> findByName(String name, HttpServletResponse httpServletResponse){
        Employee employee=employeeRepository.findByName(name);
        if(employee!=null){
            httpServletResponse.setStatus(200);
@@ -33,7 +30,7 @@ public class EmployeeService {
        resp.put("username", employee.getName());
        resp.put("authtoken", employee.getAuthToken());
        return resp;
-   }
+    }
 
     public ArrayList<Map<String,String>> findAllEmployees(HttpServletResponse httpServletResponse) {
         ArrayList<Employee> employees = employeeRepository.findAll();
