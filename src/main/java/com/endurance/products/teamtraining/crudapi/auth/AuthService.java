@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.transaction.Transactional;
+import java.util.HashMap;
+import java.util.Map;
 
 @Transactional
 @Service
@@ -20,24 +22,34 @@ public class AuthService {
     @Autowired
     private SessionIdentifierGenerator authTokenGenerator;
 
-    public void createEmployeeService(Employee employee, HttpServletResponse response){
+    public Map<String, String> createEmployeeService(Employee employee, HttpServletResponse response){
         Employee existing_emp = authRepository.findByName(employee.getName());
+        Map<String, String> message = new HashMap<>();
         if(existing_emp == null) {
-            employee.setPassword(BCrypt.hashpw(employee.getPassword(), env.getProperty("hashWithSalt")));
-            authRepository.save(employee);
-
-            response.setStatus(201);
+            if(employee.getPassword().isEmpty() || employee.getPassword() == null) {
+                response.setStatus(400);
+                message.put("error", "Cannot have empty password field");
+            }
+            else {
+                employee.setPassword(BCrypt.hashpw(employee.getPassword(), env.getProperty("hashWithSalt")));
+                authRepository.save(employee);
+                response.setStatus(201);
+                message.put("message", "Employee created successfully");
+            }
         }
-        else
+        else {
             response.setStatus(409);
-
+            message.put("error","Employee with username already exists");
+        }
+        return message;
     }
 
-    public String loginEmployeeService(String user_name, String passsword, HttpServletResponse response) {
+    public Map<String, String> loginEmployeeService(String user_name, String passsword, HttpServletResponse response) {
         Employee existing_emp = authRepository.findByName(user_name);
+        Map<String, String> message = new HashMap<>();
         if(existing_emp == null) {
             response.setStatus(404);
-            return null;
+            message.put("error", "Employee doesnot exists");
         }
         else{
             if(BCrypt.checkpw(passsword, existing_emp.getPassword())){
@@ -45,31 +57,37 @@ public class AuthService {
                 response.setStatus(200);
                 existing_emp.setCurrentEmployeeAuth(existing_emp.getAuthToken());
                 System.out.println(existing_emp.getCurrentEmployeeAuth());
-                return existing_emp.getAuthToken();
-
+                message.put("AuthToken",existing_emp.getAuthToken());
+                message.put("messgae","Succcessfuly logged in");
             }
             else{
                 response.setStatus(401);
-                return null;
+                message.put("error","Password mismatch");
             }
         }
+        return message;
     }
 
-    public void logoutEmployeeService(String employee_name, HttpServletResponse response){
+    public Map<String, String> logoutEmployeeService(String employee_name, HttpServletResponse response){
         Employee existing_emp = authRepository.findByName(employee_name);
-        if(existing_emp == null)
+        Map<String,String> message = new HashMap<>();
+        if(existing_emp == null) {
             response.setStatus(404);
+            message.put("error","Employee doesnot exist");
+        }
         else{
             if(existing_emp.getAuthToken()!=null){
                 existing_emp.setAuthToken(null);
                 authRepository.save(existing_emp);
                 response.setStatus(200);
-                System.out.println(existing_emp.getCurrentEmployeeAuth());
                 existing_emp.clearCurrentEmployeeAuth();
-                System.out.println(existing_emp.getCurrentEmployeeAuth());
+                message.put("message", "Employee successfully logged out");
             }
-            else
+            else {
                 response.setStatus(400);
+                message.put("error","Employee not logged in");
+            }
         }
+        return message;
     }
 }

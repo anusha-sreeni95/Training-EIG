@@ -30,16 +30,15 @@ public class EmployeeController {
     }
 
     @RequestMapping(value="/update",method=RequestMethod.PUT)
-    public Employee updatePassword(@RequestBody Map<String,String> body){
+    public void updatePassword(@RequestBody Map<String,String> body, HttpServletResponse response){
         String name = body.get("username");
         String password = body.get("password");
-        Employee employee=employeeService.updatePassword(name,password);
-        return employee;
+        employeeService.updatePassword(name,password, response);
     }
 
     @RequestMapping(value="/delete/{name}",method= RequestMethod.DELETE)
-    public void deleteEmployee(@PathVariable("name") String name){
-        employeeService.deleteEmployee(name);
+    public void deleteEmployee(@PathVariable("name") String name, HttpServletResponse response){
+        employeeService.deleteEmployee(name, response);
     }
 
 }

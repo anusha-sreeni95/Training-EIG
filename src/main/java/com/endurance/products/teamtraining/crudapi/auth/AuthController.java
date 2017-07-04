@@ -18,20 +18,20 @@ public class AuthController {
     private AuthService authService;
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public void createEmployee(@RequestBody Employee employee, HttpServletResponse response){
-        authService.createEmployeeService(employee, response);
+    public Map<String,String> createEmployee(@RequestBody Employee employee, HttpServletResponse response){
+        return authService.createEmployeeService(employee, response);
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public String loginEmployee(@RequestBody Map<String, String> body, HttpServletResponse response){
+    public Map<String,String> loginEmployee(@RequestBody Map<String, String> body, HttpServletResponse response){
         String user_name = body.get("username");
         String password = body.get("password");
         return authService.loginEmployeeService(user_name, password, response);
     }
 
     @RequestMapping(value = "/logout", method = RequestMethod.PUT)
-    public void logoutEmployee(@RequestBody Map<String, String> body, HttpServletResponse response){
-        authService.logoutEmployeeService(body.get("name"), response);
+    public Map<String, String> logoutEmployee(@RequestBody Map<String, String> body, HttpServletResponse response){
+        return authService.logoutEmployeeService(body.get("name"), response);
     }
 
 }

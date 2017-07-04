@@ -54,6 +54,7 @@ public class EmployeeControllerTest {
     public static void setUp(){
         Employee.setCurrentEmployeeAuth("codenamearmagadeon");
     }
+
     @Test
     public void getEmployeeTest() throws Exception {
         Mockito.when(employeeService.findByName(Mockito.anyString(),Mockito.any())).thenReturn(exampleEmployeeReturn);
@@ -68,7 +69,7 @@ public class EmployeeControllerTest {
 
     @Test
     public void updatePasswordTest() throws Exception{
-        Mockito.when(employeeService.updatePassword(Mockito.anyString(), Mockito.anyString())).thenReturn(mockEmployee);
+        //Mockito.when(employeeService.updatePassword(Mockito.anyString(), Mockito.anyString(), Mockito.any())).thenReturn();
         RequestBuilder requestBuilder = MockMvcRequestBuilders
                 .put("/emp/update").contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON).content(exampleEmployeeJson).header("authToken","codenamearmagadeon");
